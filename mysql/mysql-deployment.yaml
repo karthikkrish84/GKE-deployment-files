@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: hello_java
+        - name: MYSQL_ROOT_PASSWORD
+          value: kihtrak
+        image: mysql:8.0
+        name: mysql
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1024Mi 
+        ports:
+        - name: health-port
+          containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-database-data-volume
+      restartPolicy: Always
+      volumes:
+      - name: mysql-database-data-volume
+        persistentVolumeClaim:
+          claimName: mysql-database-data-volume

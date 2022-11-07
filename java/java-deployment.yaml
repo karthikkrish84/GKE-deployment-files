@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: javaapp
+  name: javaapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: javaapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: javaapp
+    spec:
+      containers:
+      - env:
+        - name: SQL_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_DB_NAME
+              name: javaapp
+        - name: SQL_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_HOSTNAME
+              name: javaapp
+        - name: SQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: SQL_PASSWORD
+              name: javaapp
+        - name: SQL_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_PORT
+              name: javaapp
+        - name: SQL_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              key: SQL_USERNAME
+              name: javaapp
+        image: karthikkrish84/basichello:latest
+        name: javaapp
+        ports:
+        - name: health-port
+          containerPort: 8080
+        resources: 
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1024Mi  
+        readinessProbe:
+          httpGet:
+            path: /api/employee
+            port: health-port
+          failureThreshold: 5
+          periodSeconds: 10
+          initialDelaySeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /api/employee
+            port: health-port
+          failureThreshold: 5
+          periodSeconds: 10
+          initialDelaySeconds: 60
+      restartPolicy: Always

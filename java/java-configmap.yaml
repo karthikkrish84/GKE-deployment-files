@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  SQL_DB_NAME: hello_java
+  SQL_HOSTNAME: mysql
+  SQL_PORT: "3306"
+  SQL_USERNAME: root
+kind: ConfigMap
+metadata:
+  name: javaapp

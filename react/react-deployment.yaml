@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reactapp
+  labels:
+    app: reactapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reactapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: reactapp
+    spec:
+      containers:
+      - env:
+        - name: HOST_NAME
+          value: "34.162.46.29"
+        image: karthikkrish84/myreactapp:latest
+        imagePullPolicy: Always
+        name: reactapp
+        ports:
+        - name: health-port
+          containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1024Mi 
+        readinessProbe:
+          httpGet:
+            path: /
+            port: health-port
+          failureThreshold: 5
+          periodSeconds: 10
+          initialDelaySeconds: 60
+        livenessProbe:
+          httpGet:
+            path: /
+            port: health-port
+          failureThreshold: 5
+          periodSeconds: 10
+          initialDelaySeconds: 60
+      restartPolicy: Always
