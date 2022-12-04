@@ -46,7 +46,7 @@ spec:
             configMapKeyRef:
               key: SQL_USERNAME
               name: javaapp
-        image: karthikkrish84/javaapp:latest
+        image: karthikkrish84/myjavaapp:latest
         name: javaapp
         ports:
         - name: health-port
