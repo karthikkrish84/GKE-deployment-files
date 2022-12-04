@@ -5,10 +5,10 @@ metadata:
     app: javaapp
   name: javaapp
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-  - name: "8080"
-    port: 8080
+  - name: "http"
+    port: 80
     targetPort: 8080
   selector:
     app: javaapp
