@@ -3,10 +3,10 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: javaapp
 spec:
-  maxReplicas: 6
-  minReplicas: 3
+  maxReplicas: 3
+  minReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: javaapp
-  targetCPUUtilizationPercentage: 10
+  targetCPUUtilizationPercentage: 60
