@@ -2,13 +2,23 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: awsproject-gateway
+  namespace: awsproject
 spec:
   selector:
-    istio: ingressgateway service of LoadBalancer, which creates AWS ELB
+    istio: ingressgateway
   servers:
   - port:
       number: 80
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - "*.elb.amazonaws.com"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "*.elb.amazonaws.com"
+    tls:
+      mode: SIMPLE
+      credentialName: gateway-cert
