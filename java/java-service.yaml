@@ -5,10 +5,10 @@ metadata:
     app: javaapp
   name: javaapp
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - name: "http"
-    port: 80
+    port: 8080
     targetPort: 8080
   selector:
     app: javaapp
