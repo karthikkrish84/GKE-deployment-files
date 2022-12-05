@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: guestbook-virtualservice
+  namespace: awsproject
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - awsproject-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: reactapp
+        port:
+          number: 80
